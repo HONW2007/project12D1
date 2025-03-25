@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu Bản Thân</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd, #9b59b6);
+            background-size: 600% 600%;
+            animation: gradientBG 12s ease infinite;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.5s ease;
+        }
+
+        body.dark-theme {
+            background: linear-gradient(45deg, #2c3e50, #34495e, #1abc9c);
+            color: #ecf0f1;
+        }
+
+        body.dark-theme .profile {
+            background: rgba(44, 62, 80, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-theme .contact a {
+            color: #1abc9c;
+        }
+
+        body.dark-theme .back-button {
+            background: #34495e;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .profile {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            max-width: 550px;
+            position: relative;
+            backdrop-filter: blur(15px);
+            animation: floatFade 4s ease-in-out infinite;
+            overflow: hidden;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+
+        @keyframes floatFade {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-15px); opacity: 0.95; }
+        }
+
+        .profile:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), 0 0 30px rgba(52, 152, 219, 0.7);
+        }
+
+        img {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid #3498db;
+            transition: all 0.6s ease;
+            animation: bounceGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes bounceGlow {
+            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(52, 152, 219, 0.5); }
+            50% { transform: translateY(-12px); box-shadow: 0 0 25px rgba(52, 152, 219, 0.8); }
+        }
+
+        img:hover {
+            transform: rotate(360deg) scale(1.15);
+            box-shadow: 0 0 40px rgba(52, 152, 219, 1), 0 0 60px rgba(231, 76, 60, 0.7);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.8em;
+            margin: 25px 0;
+            background: linear-gradient(90deg, #3498db, #e74c3c);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: textShine 3s infinite;
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .scrolling-text-container {
+            width: 100%;
+            height: 70px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.4), rgba(231, 76, 60, 0.4));
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .scrolling-text {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 1.6em;
+            color: #fff;
+            padding-left: 100%;
+            animation: scrollText 12s linear infinite;
+            background: linear-gradient(90deg, #3498db, #e74c3c, #9b59b6);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(52, 152, 219, 0.8), 0 0 25px rgba(231, 76, 60, 0.6);
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        p {
+            font-size: 1.3em;
+            color: #444;
+            margin: 15px 0;
+            transition: color 0.4s ease;
+        }
+
+        p strong {
+            color: #3498db;
+            text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        .role {
+            font-size: 1.7em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 25px;
+            animation: rolePulse 2s infinite;
+        }
+
+        @keyframes rolePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .contact {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+        }
+
+        .contact a {
+            text-decoration: none;
+            color: #3498db;
+            font-size: 45px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .contact a:hover {
+            transform: translateY(-12px) rotate(20deg);
+            color: #e74c3c;
+            text-shadow: 0 0 15px rgba(231, 76, 60, 0.9), 0 0 25px rgba(231, 76, 60, 0.7);
+        }
+
+        .contact a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e74c3c, #3498db);
+            bottom: -10px;
+            left: 50%;
+            transition: all 0.4s ease;
+            border-radius: 5px;
+        }
+
+        .contact a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            font-size: 22px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            transform: translateX(-8px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        button#theme-toggle {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button#theme-toggle:hover {
+            background: linear-gradient(135deg, #2980b9, #1abc9c);
+            transform: scale(1.1);
+        }
+
+        canvas#particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <button id="theme-toggle">🌙</button>
+    <a href="thanhvien.html" class="back-button">⬅ Quay lại danh sách</a>
+    <div class="profile">
+   <img src="anhlq12D1/thihoaatris.jpeg" alt="Avatar">
+        <h1 class="typing">Trần Thị Hoa</h1>
+        <p><strong>Ngày sinh:</strong> 01/01/2007</p>
+        <p><strong>Sở thích:</strong> Chơi game, ăn uống,...</p>
+        <div class="scrolling-text-container">
+            <div class="scrolling-text">Chào các bạn! Mình là Hoa, đam mê game và ẩm thực!</div>
+        </div>
+        <div class="role">Vai trò: thành viên</div>
+        <div class="contact">
+            <a href="mailto:youremail@example.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const particleCount = 250;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 4 + 1;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1.5 - 0.75;
+                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                this.life = Math.random() * 60 + 60;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+                if (this.life <= 0) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.life = Math.random() * 60 + 60;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life / 120;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        const toggleButton = document.getElementById('theme-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            toggleButton.textContent = document.body.classList.contains('dark-theme') ? '🌞' : '🌙';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunrise Memories - Class 12D1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a3d, #0d0d1a);
+            perspective: 3000px;
+        }
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+        :root {
+            --v1: #be91c6; --v2: #8a65cc; --v3: #5e30d9; --transparentv3: #5e30d900; --v4: #3b1895;
+            --s1: #fea798; --s2: #ff846e; --cloud: #fea798;
+        }
+        .landscape:after, .landscape:before, .landscape *, .landscape *:after, .landscape *:before { position: absolute; }
+        .front { z-index: 1; bottom: 0; left: 0; right: 0; }
+        .landscape {
+            height: 100vh;
+            background-image: linear-gradient(var(--v1), var(--s1), var(--v1));
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .mountain {
+            border-radius: 180% 80% 0% 0%/60vmin 60vmin 0% 0%;
+            width: 40vmin; height: 30vmin; bottom: 50%; left: -10vmin;
+            background: var(--s1); background-image: linear-gradient(var(--v1), var(--v2) 30%, var(--v3));
+            box-shadow: inset -10px 0 10px -10px var(--s1);
+            transition: filter 0.3s ease;
+        }
+        .mountain:hover { filter: brightness(1.2); }
+        .mountain:before { content: ""; bottom: 0; width: inherit; height: inherit; background: inherit; border-radius: inherit; transform-origin: bottom center; transform: scaleX(1) scaleY(-0.6); filter: blur(3px); }
+        .mountain-2 {
+            left: 5vmin; height: 15vmin; width: 40vmin; box-shadow: inset -15px 0 10px -14px var(--s1);
+            border-radius: 120% 50% 0% 0%/25vmin 25vmin 0% 0%; background-image: linear-gradient(var(--v3), var(--v4));
+            transition: filter 0.3s ease;
+        }
+        .mountain-2:hover { filter: brightness(1.2); }
+        .mountain-3 {
+            border-radius: 80% 0% 0 0/100% 100% 0 0; right: -85vmin; width: 100vmin; left: auto; height: 12vmin;
+            color: var(--v3); background-image: linear-gradient(var(--s1), var(--v4)); box-shadow: inset 15px 0 10px -10px var(--s1);
+            transition: filter 0.3s ease;
+        }
+        .mountain-3:hover { filter: brightness(1.2); }
+        .mountain-3:after { content: ""; border-radius: 60% 0 0 0/100% 0 0 0; background: inherit; width: 100%; height: 0; bottom: 0; right: 20%; }
+        .mountain-reflection {
+            background: inherit; transform: scaleY(-1); top: 50%; opacity: 0.3; filter: blur(2px);
+            animation: rippleReflection 5s infinite;
+        }
+        @keyframes rippleReflection { 0%, 100% { transform: scaleY(-1) translateY(0); } 50% { transform: scaleY(-1) translateY(5px); } }
+        .lotus { width: 10vmin; height: 5vmin; background: conic-gradient(var(--v3) 0deg 40deg, var(--transparentv3) 50deg 70deg, var(--v3) 80deg); border-radius: 50%; }
+        .lotus-1 { bottom: 10vmin; right: 5vmin; width: 20vmin; }
+        .lotus-2 { bottom: 20vmin; right: 15vmin; height: 3vmin; transform: skew(-10deg); opacity: 0.5; mix-blend-mode: multiply; }
+        .lotus-3 { bottom: 10vmin; right: 35vmin; transform: rotate(180deg) skew(-20deg); opacity: 0.8; width: 15vmin; }
+        .cloud {
+            width: 80vmin; height: 6vmin; background: currentcolor; color: var(--cloud); top: 24vmin; left: 20vmin; border-radius: 50%;
+            box-shadow: 30vmin 0.5vmin 0 -1vmin currentcolor, -25vmin 0 0 -0.6vmin currentcolor;
+            animation: clouds 120s infinite; animation-delay: -10s;
+        }
+        @keyframes clouds { 0% { transform: translate3d(-150vmin, 0, 0) scale(1); opacity: 0.3; } 50% { transform: translate3d(0, 0, 0) scale(1.1); opacity: 0.5; } 100% { transform: translate3d(150vmin, 0, 0) scale(1); opacity: 0.3; } }
+        .cloud-1 { left: 60vmin; top: 15vmin; opacity: 0.2; filter: blur(1px); animation-delay: 0; animation-duration: 100s; }
+        .stone { bottom: -5vh; left: 0; height: 20vmin; width: 40vmin; background: var(--v4); box-shadow: inset 0 0 20px -5px rgba(0, 0, 0, 0.2); border-radius: 0% 200% 0 0/0% 200%; }
+        .stone:after { content: ""; background: var(--v3); width: 100%; height: 100%; right: -15%; border-radius: inherit; z-index: -1; transform: scaleX(1.3) skew(10deg); box-shadow: inset 0 0 20px -5px rgba(0, 0, 0, 0.4); }
+        .grass { height: 40vmin; width: 10vmin; border-radius: 0 60% 0 0/0 100% 0 0; bottom: 0; border-right: 5px solid var(--v4); box-shadow: 1px 0 0 var(--s1); filter: drop-shadow(-0.5vmin 6vmin 0 var(--s2)) drop-shadow(-4.5vmin 10vmin 0 var(--v3)); animation: wind 3s infinite ease-in-out; }
+        .grass-1 { left: 14vmin; bottom: -2vmin; transform: scaleX(-1); box-shadow: 2px 0 0 var(--v4); border-color: var(--v3); filter: drop-shadow(-1vmin 5vmin 0 var(--v3)) drop-shadow(-80vmin 5vmin 0 var(--v4)); animation-delay: 0.5s; }
+        .grass-2 { right: 0; left: auto; height: 20vmin; bottom: -2vmin; transform: scaleX(-1); }
+        @keyframes wind { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
+        .sun { background: white; border-radius: 50%; width: 20vmin; height: 20vmin; left: calc(60% - 10vmin); top: 100%; transform: translate3d(0, 0, 0); animation: rise 20s infinite; box-shadow: 0 0 10px white; transition: filter 0.3s ease; }
+        .sun:hover { filter: brightness(1.5); }
+        .reed { height: 40vmin; width: 0.5vmin; bottom: 0; left: 10vmin; color: var(--v4); background: currentColor; transform-origin: bottom center; animation: wind 3s infinite ease-in-out, verticalise 20s infinite; box-shadow: inset -1px 0 0 var(--s2), -6vmin 3vmin 0 0, 80vmin 0 0 0; }
+        .reed-1 { color: var(--s2); left: 15vmin; height: 50vmin; bottom: -5vmin; animation: wind 3s infinite ease-in-out 1s, verticalise-1 20s infinite; box-shadow: inset -1px 0 0 var(--s1), 6vmin 13vmin 0 0 var(--s1), 80vmin 10vmin 0 0 var(--v3); }
+        .reed:after { content: ""; width: 1.5vmin; height: 10vmin; background: currentcolor; border-radius: 0.75vmin; top: 0; left: -0.5vmin; box-shadow: inherit; }
+        @keyframes verticalise { 0%, 10% { transform: rotate(4deg); } 30%, 70% { transform: rotate(0); } }
+        @keyframes verticalise-1 { 0%, 10% { transform: rotate(-2deg); } 45%, 70% { transform: rotate(0) translateY(-6vmin); } }
+        @keyframes rise { 100% { transform: translate3d(0, -100vh, 20vmin); } }
+        @keyframes rise-reflection { 30% { opacity: 0; transform: translate3d(0, 5vmin, 0); } 100% { opacity: 0; transform: translate3d(0, 80vmin, 0); } }
+        .sun-container { overflow: hidden; width: 100%; height: 50%; }
+        .sun-container-1:after { content: ""; left: 0; right: 0; top: 0; bottom: 0; background: radial-gradient(circle at 60% 100%, var(--s2), transparent); animation: fade 20s infinite; mix-blend-mode: color-burn; }
+        @keyframes fade { 10% { opacity: 1; } 30%, 70% { opacity: 0; } }
+        .sun-container-reflection { top: 50%; background: radial-gradient(circle at 60% 0%, var(--s2), transparent); }
+        .sun-container-reflection .sun { background: linear-gradient(white, rgba(255, 255, 255, 0)); box-shadow: none; filter: blur(5px); opacity: 1; top: 0; transform: translate3d(0, -20vmin, 0); animation-name: rise-reflection; }
+        .light { height: 0.5vmin; width: 20vmin; background: white; left: 20%; right: 0; margin: auto; top: calc(50% + 1vmin); animation: light 20s infinite; opacity: 0; transform: scaleX(0.1) translate3d(0%, 0, 0); border-radius: 0.25vh; filter: blur(1px); }
+        @keyframes light { 5% { opacity: 1; transform: scaleX(1); } 10% { opacity: 0.6; transform: scaleX(1) translate3d(5%, 0, 0); } 15% { opacity: 0.6; transform: scaleX(1) translate3d(-5%, 0, 0); } 20% { opacity: 0; transform: scaleX(0.1) translate3d(0, 0, 0); } }
+        .light-1 { top: calc(50% + 2vmin); animation-delay: 0.5s; }
+        .light-2 { top: calc(50% + 3vmin); width: 18vmin; animation-delay: 1s; }
+        .light-3 { top: calc(50% + 4vmin); width: 18vmin; animation-delay: 1.5s; }
+        .light-4 { top: calc(50% + 5vmin); width: 16vmin; animation-delay: 2s; }
+        .light-5 { top: calc(50% + 8vmin); width: 14vmin; animation-delay: 2.5s; }
+        .light-6 { top: calc(50% + 9vmin); width: 10vmin; animation-delay: 3s; }
+        .light-7 { top: calc(50% + 7vmin); width: 12vmin; animation-delay: 3.5s; }
+        .splash { width: 8vmin; height: 3vmin; border: 2px solid var(--s1); box-shadow: 0 0 2px var(--s1); border-radius: 50%; bottom: 5vmin; left: 70%; animation: splash 9s infinite; transform: scale(0); }
+        .splash-stone { bottom: 15vh; left: -3vmin; height: 10vmin; width: 30vmin; }
+        .splash-4 { bottom: 15vmin; left: auto; right: -2vmin; }
+        @keyframes splash { 50%, 100% { transform: scale(1); opacity: 0; } }
+        .delay-1 { animation-delay: 1s; }
+        .delay-2 { animation-delay: 2s; }
+        .delay-3 { animation-delay: 3s; }
+        .delay-4 { animation-delay: 4s; }
+
+        .header { position: absolute; top: 10px; left: 0; right: 0; z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        h1 { font-size: clamp(20px, 3vw, 28px); color: #ffeb3b; text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff4757; letter-spacing: 2px; margin: 0; }
+        .footer-text { position: absolute; bottom: 20px; left: 50%; transform: translateX(-40%) translateX(-170px); z-index: 10; font-size: clamp(12px, 1.5vw, 14px); color: #fff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); margin: 0; white-space: nowrap; }
+        .buttons { position: absolute; top: 50%; left: 30%; transform: translate(-50%, -50%); z-index: 20; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .btn { background: linear-gradient(90deg, #ff4757, #00ddeb, #ffd700, #6a11cb); color: white; padding: 8px 20px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: clamp(10px, 1.6vw, 14px); box-shadow: 0 0 12px rgba(255, 71, 87, 0.8); transition: all 0.3s ease; background-size: 400% 400%; animation: gradientMove 4s ease infinite; text-align: center; display: inline-block; position: relative; width: 110px; }
+        .btn:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 0 25px rgba(255, 71, 87, 1); filter: brightness(1.3); }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    </style>
+</head>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <div class="landscape">
+        <div class="mountain"></div>
+        <div class="mountain mountain-reflection"></div>
+        <div class="mountain mountain-2"></div>
+        <div class="mountain mountain-2 mountain-reflection"></div>
+        <div class="mountain mountain-3"></div>
+        <div class="mountain mountain-3 mountain-reflection"></div>
+        <div class="sun-container sun-container-1"></div>
+        <div class="sun-container"><div class="sun"></div></div>
+        <div class="cloud"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="sun-container sun-container-reflection"><div class="sun"></div></div>
+        <div class="light"></div><div class="light light-1"></div><div class="light light-2"></div><div class="light light-3"></div>
+        <div class="light light-4"></div><div class="light light-5"></div><div class="light light-6"></div><div class="light light-7"></div>
+        <div class="splash"></div><div class="splash delay-1"></div><div class="splash delay-2"></div><div class="splash splash-4 delay-2"></div>
+        <div class="splash splash-4 delay-3"></div><div class="splash splash-4 delay-4"></div><div class="splash splash-stone delay-3"></div>
+        <div class="splash splash-stone splash-4"></div><div class="splash splash-stone splash-5"></div>
+        <div class="lotus lotus-1"></div><div class="lotus lotus-2"></div><div class="lotus lotus-3"></div>
+        <div class="front"><div class="stone"></div><div class="grass"></div><div class="grass grass-1"></div><div class="grass grass-2"></div>
+        <div class="reed"></div><div class="reed reed-1"></div></div>
+        <div class="header"><h1>Chào Mừng Đến Với Kỷ Niệm Lớp 12D1</h1></div>
+        <div class="footer-text"><p>Tất cả được quyền bảo lưu. Niên khóa 2022-2025</p></div>
+        <div class="buttons"><a href="trangchu.html" class="btn">Trang Chủ</a><a href="hoatdong.html" class="btn">Hoạt Động</a><a href="thanhvien.html" class="btn">Thành Viên</a></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('backgroundCanvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 80;
+    
+        const renderScene = new THREE.RenderPass(scene, camera);
+        const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.6, 0.9);
+        bloomPass.strength = 2.8;
+        const composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+    
+        
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 10000;
+        const posArray = new Float32Array(starCount * 3);
+        const velocities = new Float32Array(starCount);
+        const colors = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+            posArray[i * 3] = (Math.random() - 0.5) * 450;
+            posArray[i * 3 + 1] = (Math.random() - 0.5) * 450;
+            posArray[i * 3 + 2] = (Math.random() - 0.5) * 450;
+            velocities[i] = Math.random() * 0.08 + 0.06;
+            colors[i * 3] = Math.random();
+            colors[i * 3 + 1] = Math.random();
+        }
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const starMaterial = new THREE.PointsMaterial({ size: 0.5, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+    
+        
+        const nebulaGeometry = new THREE.SphereGeometry(250, 64, 64);
+        const nebulaMaterial = new THREE.MeshBasicMaterial({ color: 0xff4757, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+        const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+        scene.add(nebula);
+    
+        
+        const rainGeometry = new THREE.BufferGeometry();
+        const rainCount = 2000;
+        const rainPos = new Float32Array(rainCount * 3);
+        for (let i = 0; i < rainCount; i++) {
+            rainPos[i * 3] = (Math.random() - 0.5) * 400;
+            rainPos[i * 3 + 1] = Math.random() * 400;
+            rainPos[i * 3 + 2] = (Math.random() - 0.5) * 400;
+        }
+        rainGeometry.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+        const rainMaterial = new THREE.PointsMaterial({ size: 1.0, color: 0xdddddd, transparent: true, opacity: 0.8 });
+        const rain = new THREE.Points(rainGeometry, rainMaterial);
+        scene.add(rain);
+    
+        
+        const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
+        const waterShader = {
+            uniforms: {
+                time: { value: 0.0 },
+                color1: { value: new THREE.Color('#fea798') },
+                color2: { value: new THREE.Color('#8a65cc') },
+                rippleOrigin: { value: new THREE.Vector2(0.5, 0.5) },
+                rippleTime: { value: 0.0 },
+                reflectionTexture: { value: null }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform vec3 color1;
+                uniform vec3 color2;
+                uniform vec2 rippleOrigin;
+                uniform float rippleTime;
+                uniform sampler2D reflectionTexture;
+                varying vec2 vUv;
+    
+                float noise(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+                }
+    
+                void main() {
+                    // Multi-layered waves
+                    float wave1 = sin(vUv.x * 10.0 + time) * cos(vUv.y * 10.0 + time) * 0.05;
+                    float wave2 = sin(vUv.x * 5.0 - time * 0.5) * cos(vUv.y * 5.0 + time * 0.5) * 0.03;
+                    float wave = wave1 + wave2;
+    
+                    // Ripple effect
+                    float dist = distance(vUv, rippleOrigin);
+                    float ripple = sin(dist * 50.0 - rippleTime * 5.0) * exp(-dist * 5.0) * 0.1;
+    
+                    // Base color with waves
+                    vec3 color = mix(color1, color2, vUv.y + wave + ripple);
+    
+                    // Reflection with distortion
+                    vec2 distortedUv = vUv + vec2(wave, ripple) * 0.1;
+                    vec4 reflection = texture2D(reflectionTexture, distortedUv);
+                    color = mix(color, reflection.rgb, 0.7);
+    
+                    // Sparkles
+                    float sparkle = noise(vUv * 50.0 + vec2(time, time * 0.7));
+                    sparkle = smoothstep(0.95, 1.0, sparkle) * 0.5;
+                    color += vec3(sparkle) * vec3(1.0, 1.0, 0.8);
+    
+                    // Caustics (ánh sáng chiếu qua nước)
+                    float caustics = sin(vUv.x * 20.0 + time * 2.0) * cos(vUv.y * 20.0 + time * 2.0) * 0.1;
+                    caustics = smoothstep(0.8, 1.0, caustics + noise(vUv * 10.0));
+                    color += vec3(caustics) * vec3(0.8, 0.8, 1.0); // Ánh sáng xanh nhạt
+    
+                    gl_FragColor = vec4(color, 0.85);
+                }
+            `
+        };
+        const waterMaterial = new THREE.ShaderMaterial({ uniforms: waterShader.uniforms, vertexShader: waterShader.vertexShader, fragmentShader: waterShader.fragmentShader, transparent: true });
+        const water = new THREE.Mesh(waterGeometry, waterMaterial);
+        water.rotation.x = -Math.PI / 2;
+        water.position.y = -50;
+        scene.add(water);
+    
+    
+        const fogGeometry = new THREE.PlaneGeometry(1000, 1000);
+        const fogMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0.0 },
+                fogColor: { value: new THREE.Color(0xaaaaaa) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform vec3 fogColor;
+                varying vec2 vUv;
+                float noise(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+                }
+                void main() {
+                    float n = noise(vUv * 5.0 + vec2(time * 0.2, 0.0));
+                    float fog = smoothstep(0.2, 0.8, n);
+                    gl_FragColor = vec4(fogColor, fog * 0.3);
+                }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending
+        });
+        const waterFog = new THREE.Mesh(fogGeometry, fogMaterial);
+        waterFog.rotation.x = -Math.PI / 2;
+        waterFog.position.y = -45; // Ngay trên mặt nước
+        scene.add(waterFog);
+    
+        // Sun Light
+        const sunLight = new THREE.PointLight(0xffffff, 1, 500);
+        sunLight.position.set(0, 50, 50);
+        scene.add(sunLight);
+    
+        // Halo
+        const haloGeometry = new THREE.RingGeometry(25, 30, 32);
+        const haloMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+        const halo = new THREE.Mesh(haloGeometry, haloMaterial);
+        halo.position.set(0, 0, 10);
+        scene.add(halo);
+    
+        // Birds
+        const birdGeometry = new THREE.BufferGeometry();
+        const birdVertices = new Float32Array([-1, 0, 0, 0, 1, 0, 1, 0, 0]);
+        birdGeometry.setAttribute('position', new THREE.BufferAttribute(birdVertices, 3));
+        const birdMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const birds = [];
+        for (let i = 0; i < 10; i++) {
+            const bird = new THREE.Line(birdGeometry, birdMaterial);
+            bird.position.set(-200 + i * 20, 100 + Math.random() * 50, 0);
+            scene.add(bird);
+            birds.push(bird);
+        }
+    
+        // Dust
+        const dustGeometry = new THREE.BufferGeometry();
+        const dustCount = 500;
+        const dustPos = new Float32Array(dustCount * 3);
+        for (let i = 0; i < dustCount; i++) {
+            dustPos[i * 3] = (Math.random() - 0.5) * 400;
+            dustPos[i * 3 + 1] = (Math.random() - 0.5) * 200;
+            dustPos[i * 3 + 2] = (Math.random() - 0.5) * 400;
+        }
+        dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+        const dustMaterial = new THREE.PointsMaterial({ size: 0.3, color: 0xaaaaaa, transparent: true, opacity: 0.4 });
+        const dust = new THREE.Points(dustGeometry, dustMaterial);
+        scene.add(dust);
+    
+        // Fog
+        scene.fog = new THREE.Fog(0x1a1a3d, 50, 300);
+    
+        // Volumetric Cloud
+        const cloudPlaneGeometry = new THREE.PlaneGeometry(500, 500);
+        const cloudShader = {
+            uniforms: {
+                time: { value: 0.0 },
+                lightPosition: { value: new THREE.Vector3(0, 50, 50) },
+                cloudColor: { value: new THREE.Color(0xaaaaaa) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform vec3 lightPosition;
+                uniform vec3 cloudColor;
+                varying vec2 vUv;
+                void main() {
+                    float noise = fract(sin(dot(vUv * 10.0, vec2(12.9898, 78.233))) * 43758.5453);
+                    float cloud = smoothstep(0.3, 0.7, noise + sin(time * 0.1));
+                    float light = max(0.0, dot(normalize(lightPosition), vec3(0.0, 0.0, 1.0)));
+                    vec3 finalColor = cloudColor * cloud * (0.5 + light * 0.5);
+                    gl_FragColor = vec4(finalColor, cloud * 0.5);
+                }
+            `
+        };
+        const cloudMaterial = new THREE.ShaderMaterial({ uniforms: cloudShader.uniforms, vertexShader: cloudShader.vertexShader, fragmentShader: cloudShader.fragmentShader, transparent: true, blending: THREE.AdditiveBlending });
+        const cloudPlane = new THREE.Mesh(cloudPlaneGeometry, cloudMaterial);
+        cloudPlane.position.set(0, 100, 0);
+        scene.add(cloudPlane);
+    
+        // Rainbow with Enhanced Clarity
+        const rainbowGeometry = new THREE.TorusGeometry(100, 5, 16, 100);
+        const rainbowShader = {
+            uniforms: { time: { value: 0.0 } },
+            vertexShader: `
+                varying vec3 vPosition;
+                void main() {
+                    vPosition = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                varying vec3 vPosition;
+                void main() {
+                    float angle = atan(vPosition.y, vPosition.x);
+                    vec3 color = vec3(0.0);
+                    color.r = sin(angle + time) * 0.5 + 0.5;
+                    color.g = sin(angle + 2.0 + time) * 0.5 + 0.5;
+                    color.b = sin(angle + 4.0 + time) * 0.5 + 0.5;
+                    float dispersion = noise(vec2(angle, time)) * 0.1; // Tán sắc nhẹ
+                    color += vec3(dispersion);
+                    gl_FragColor = vec4(color, 0.8); // Tăng độ sáng
+                }
+                float noise(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+                }
+            `
+        };
+        const rainbowMaterial = new THREE.ShaderMaterial({ uniforms: rainbowShader.uniforms, vertexShader: rainbowShader.vertexShader, fragmentShader: rainbowShader.fragmentShader, transparent: true, blending: THREE.AdditiveBlending });
+        const rainbow = new THREE.Mesh(rainbowGeometry, rainbowMaterial);
+        rainbow.position.z = -50;
+        rainbow.rotation.x = Math.PI / 2;
+        scene.add(rainbow);
+    
+        // Dragonflies with Enhanced Detail
+        const dragonflyGeometry = new THREE.PlaneGeometry(5, 5);
+        const dragonflyMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.9, side: THREE.DoubleSide });
+        const dragonflyCount = 20;
+        const dragonflies = new THREE.InstancedMesh(dragonflyGeometry, dragonflyMaterial, dragonflyCount);
+        const dummy = new THREE.Object3D();
+        for (let i = 0; i < dragonflyCount; i++) {
+            dummy.position.set((Math.random() - 0.5) * 100, -40 + Math.random() * 20, (Math.random() - 0.5) * 100);
+            dummy.rotation.y = Math.random() * Math.PI * 2;
+            dummy.updateMatrix();
+            dragonflies.setMatrixAt(i, dummy.matrix);
+        }
+        scene.add(dragonflies);
+    
+        // Falling Leaves
+        const leafGeometry = new THREE.PlaneGeometry(2, 2);
+        const leafMaterial = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.7, side: THREE.DoubleSide });
+        const leafCount = 50;
+        const leaves = new THREE.InstancedMesh(leafGeometry, leafMaterial, leafCount);
+        const leafVelocities = new Float32Array(leafCount);
+        for (let i = 0; i < leafCount; i++) {
+            dummy.position.set((Math.random() - 0.5) * 400, 200, (Math.random() - 0.5) * 400);
+            dummy.rotation.z = Math.random() * Math.PI * 2;
+            dummy.updateMatrix();
+            leaves.setMatrixAt(i, dummy.matrix);
+            leafVelocities[i] = Math.random() * 0.5 + 0.2;
+        }
+        scene.add(leaves);
+    
+        // Reflection
+        const reflectionCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+        waterMaterial.uniforms.reflectionTexture = { value: renderTarget.texture };
+    
+        // Day-Night
+        let timeOfDay = 0;
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'Toggle Day/Night';
+        toggleButton.style.position = 'absolute';
+        toggleButton.style.top = '20px';
+        toggleButton.style.right = '20px';
+        toggleButton.style.zIndex = '30';
+        document.body.appendChild(toggleButton);
+        toggleButton.addEventListener('click', () => {
+            timeOfDay = 1 - timeOfDay;
+        });
+    
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const elapsedTime = clock.getElapsedTime();
+    
+            // Update stars
+            const starPos = stars.geometry.attributes.position.array;
+            for (let i = 0; i < starCount; i++) {
+                starPos[i * 3 + 2] += velocities[i];
+                if (starPos[i * 3 + 2] > 225) starPos[i * 3 + 2] = -225;
+            }
+            stars.geometry.attributes.position.needsUpdate = true;
+    
+            // Update rain
+            const rainPos = rain.geometry.attributes.position.array;
+            for (let i = 0; i < rainCount; i++) {
+                rainPos[i * 3 + 1] -= 0.5;
+                if (rainPos[i * 3 + 1] < -200) rainPos[i * 3 + 1] = 200;
+            }
+            rain.geometry.attributes.position.needsUpdate = true;
+    
+            // Update nebula
+            nebula.rotation.y += 0.006;
+            nebula.rotation.x += 0.003;
+    
+            // Update water
+            waterMaterial.uniforms.time.value = elapsedTime;
+            waterMaterial.uniforms.rippleTime.value += delta;
+    
+            // Update water fog
+            fogMaterial.uniforms.time.value = elapsedTime;
+    
+    
+            sunLight.position.y = 50 * Math.sin(elapsedTime);
+            sunLight.position.x = 50 * Math.cos(elapsedTime);
+    
+            // Update halo
+            halo.scale.set(1 + Math.sin(elapsedTime) * 0.1, 1 + Math.sin(elapsedTime) * 0.1, 1);
+            halo.rotation.z += 0.01;
+    
+        
+            birds.forEach(bird => {
+                bird.position.x += 0.5;
+                bird.position.y += Math.sin(bird.position.x * 0.1) * 0.2;
+                if (bird.position.x > 200) bird.position.x = -200;
+            });
+    
+        
+            const dustPos = dust.geometry.attributes.position.array;
+            for (let i = 0; i < dustCount; i++) {
+                dustPos[i * 3] += Math.sin(elapsedTime + i) * 0.02;
+                if (dustPos[i * 3] > 200) dustPos[i * 3] = -200;
+            }
+            dust.geometry.attributes.position.needsUpdate = true;
+    
+    
+            cloudShader.uniforms.time.value = elapsedTime;
+            cloudShader.uniforms.lightPosition.value.copy(sunLight.position);
+    
+    
+            rainbowShader.uniforms.time.value = elapsedTime;
+    
+            
+            for (let i = 0; i < dragonflyCount; i++) {
+                dragonflies.getMatrixAt(i, dummy.matrix);
+                dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+                dummy.position.y += Math.sin(elapsedTime + i) * 0.05;
+                dummy.position.x += Math.cos(elapsedTime + i) * 0.02;
+                dummy.rotation.z = Math.sin(elapsedTime + i) * 0.2;
+                dummy.updateMatrix();
+                dragonflies.setMatrixAt(i, dummy.matrix);
+            }
+            dragonflies.instanceMatrix.needsUpdate = true;
+    
+    
+            for (let i = 0; i < leafCount; i++) {
+                leaves.getMatrixAt(i, dummy.matrix);
+                dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+                dummy.position.y -= leafVelocities[i];
+                dummy.position.x += Math.sin(elapsedTime + i) * 0.1;
+                dummy.rotation.z += 0.05;
+                if (dummy.position.y < -200) dummy.position.y = 200;
+                dummy.updateMatrix();
+                leaves.setMatrixAt(i, dummy.matrix);
+            }
+            leaves.instanceMatrix.needsUpdate = true;
+    
+        
+            reflectionCamera.position.copy(camera.position);
+            reflectionCamera.position.y *= -1;
+            reflectionCamera.lookAt(0, -50, 0);
+            renderer.setRenderTarget(renderTarget);
+            renderer.render(scene, reflectionCamera);
+            renderer.setRenderTarget(null);
+    
+            
+            const t = timeOfDay;
+            sunLight.color.setRGB(1, 1 - t * 0.5, 1 - t);
+            nebulaMaterial.color.setRGB(1 - t, 0.3, 0.5 + t * 0.5);
+            document.body.style.background = `radial-gradient(circle at center, #1a1a3d, #${Math.floor(t * 255).toString(16)}0d0d1a)`;
+    
+            composer.render();
+        }
+        animate();
+    
+    
+        window.addEventListener('mousemove', (event) => {
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            camera.position.x = mouseX * 10;
+            camera.position.y = mouseY * 10;
+        });
+
+        
+        window.addEventListener('click', (event) => {
+            const mouseX = event.clientX / window.innerWidth;
+            const mouseY = 1.0 - event.clientY / window.innerHeight;
+            waterMaterial.uniforms.rippleOrigin.value.set(mouseX, mouseY);
+            waterMaterial.uniforms.rippleTime.value = 0.0;
+        });
+    
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            reflectionCamera.aspect = window.innerWidth / window.innerHeight;
+            reflectionCamera.updateProjectionMatrix();
+            renderTarget.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu Bản Thân</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body.dark-theme {
+            background: linear-gradient(45deg, #2c3e50, #1a252f);
+        }
+
+        body.dark-theme .profile {
+            background: rgba(44, 62, 80, 0.95);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .contact a { color: #f1c40f; }
+        body.dark-theme .back-button { background: #34495e; }
+        body.dark-theme .scrolling-text-container { background: rgba(241, 196, 15, 0.2); }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            font-size: 2em;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        body.dark-theme #theme-toggle { color: #f1c40f; }
+        #theme-toggle:hover {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Profile Card */
+        .profile {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), 0 0 30px rgba(52, 152, 219, 0.3);
+            max-width: 500px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: floatCard 4s ease-in-out infinite;
+        }
+
+        .profile:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(52, 152, 219, 0.5);
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Avatar */
+        img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid transparent;
+            background: linear-gradient(45deg, #3498db, #e74c3c) border-box;
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+        }
+
+        img:hover {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.8), 0 0 40px rgba(231, 76, 60, 0.6);
+        }
+
+        /* Typing Effect */
+        h1 {
+            font-size: 2.8em;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        body.dark-theme h1 { color: #ecf0f1; }
+
+        .typing {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #3498db;
+            animation: typing 4s steps(30, end) forwards, blink 0.75s infinite;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        body.dark-theme .typing { border-right-color: #f1c40f; }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.6), rgba(231, 76, 60, 0.6), rgba(241, 196, 15, 0.6));
+            animation: rise 8s infinite, float 3s ease-in-out infinite;
+            opacity: 0.7;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: background 1s ease;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-800px); opacity: 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(100px); }
+        }
+
+        .bubble:nth-child(1) { width: 60px; height: 60px; left: 20%; animation-duration: 5s; }
+        .bubble:nth-child(2) { width: 80px; height: 80px; left: 40%; animation-duration: 7s; }
+        .bubble:nth-child(3) { width: 50px; height: 50px; left: 70%; animation-duration: 6s; }
+
+        /* Scrolling Text */
+        .scrolling-text-container {
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .scrolling-text {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333; /* Màu tối cho chế độ sáng */
+            padding-left: 100%;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 152, 219, 0.5);
+            animation: scrollText 15s linear infinite;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        body.dark-theme .scrolling-text {
+            color: #fff; /* Màu sáng cho chế độ tối */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(241, 196, 15, 0.8);
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Paragraphs */
+        p {
+            font-size: 1.3em;
+            color: #555;
+            margin: 15px 0;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-theme p { color: #bdc3c7; }
+        p strong { color: #3498db; }
+        body.dark-theme p strong { color: #f1c40f; }
+
+        .role {
+            font-size: 1.6em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+
+        body.dark-theme .role { color: #e67e22; }
+
+        /* Contact Icons */
+        .contact a {
+            color: #3498db;
+            font-size: 35px;
+            margin: 20px;
+            transition: all 0.4s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        .contact a:hover {
+            transform: scale(1.5) rotateY(360deg);
+            color: #e74c3c;
+            text-shadow: 0 0 15px rgba(231, 76, 60, 0.8), 0 0 25px rgba(231, 76, 60, 0.6);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            text-decoration: none;
+            color: #fff;
+            background: #3498db;
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .back-button:hover {
+            background: #2980b9;
+            transform: translateX(-5px);
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.8);
+        }
+
+        /* Particle Background */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="bubble" style="width: 60px; height: 60px; left: 20%; animation-duration: 5s;"></div>
+    <div class="bubble" style="width: 80px; height: 80px; left: 40%; animation-duration: 7s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 70%; animation-duration: 6s;"></div>
+
+    <button id="theme-toggle">🌙</button>
+    <a href="thanhvien.html" class="back-button">⬅ Quay lại danh sách</a>
+    
+    <div class="profile">
+        <img src="anhlq12D1\mhonquilen.jpeg" alt="Avatar">
+        <h1 class="typing">Trương Minh Hơn</h1>
+        <p><strong>Ngày sinh:</strong> 29/07/2007</p>
+        <p><strong>Sở thích:</strong> Lập trình, chơi game, ăn uống...</p>
+        <div class="role">Vai trò: Thành viên trong lớp</div>
+
+        <div class="scrolling-text-container">
+            <div class="scrolling-text">Chào các bạn! Mình là Minh Hơn, rất đam mê lập trình và khám phá công nghệ. | </div>
+        </div>
+
+        <div class="contact">
+            <a href="mailto:youremail@example.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.facebook.com/hon.truong.9615566/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/hon.truong.9615566/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@trmhon_2907" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const toggleButton = document.getElementById('theme-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            toggleButton.textContent = document.body.classList.contains('dark-theme') ? '🌞' : '🌙';
+        });
+
+        // Particle Background
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.life = Math.random() * 60 + 60;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+
+                if (this.life <= 0) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.life = Math.random() * 60 + 60;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.life / 120})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Scrolling Text Seamless Loop
+        const scrollingText = document.querySelector('.scrolling-text');
+        const textContent = scrollingText.textContent.trim();
+        scrollingText.textContent = `${textContent} ${textContent}`; // Nhân đôi nội dung để chạy liền mạch
+    </script>
+</body>
+</html>

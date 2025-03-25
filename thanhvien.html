@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thành viên 1 - Lớp 12D1</title>
+    <link rel="stylesheet" href="hoatdong.css">
+    <link rel="stylesheet" href="bang.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            animation: waveBackground 10s infinite alternate;
+            overflow-x: hidden;
+        }
+        @keyframes waveBackground {
+            from { background-position: 0% 0%; }
+            to { background-position: 100% 100%; }
+        }
+        .container {
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: 10px;
+            width: 80%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+            border: 2px solid rgba(255, 105, 180, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            overflow-x: hidden;
+        }
+        .sparkle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 10%, rgba(255,255,255,0) 70%);
+            animation: sparkleEffect 1s infinite alternate;
+        }
+        @keyframes sparkleEffect {
+            from { opacity: 0.3; }
+            to { opacity: 0.7; }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background: linear-gradient(135deg, #ff6b6b, #f94d6a);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: fireText 1.5s infinite alternate;
+            padding: 12px;
+        }
+        @keyframes fireText {
+            from { text-shadow: 0 0 10px #ff4500, 0 0 20px #ff6347; }
+            to { text-shadow: 0 0 20px #ff4500, 0 0 40px #ff6347; }
+        }
+        tr {
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        tr:hover {
+            background-color: rgba(255, 165, 0, 0.5);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.7);
+            animation: pulseGlow 1s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 20px rgba(255, 165, 0, 0.7); }
+            to { box-shadow: 0 0 30px rgba(255, 69, 0, 0.9); }
+        }
+        tr:active {
+            animation: shimmer 0.5s ease-out;
+        }
+        @keyframes shimmer {
+            0% { background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.6), rgba(255,255,255,0.1)); }
+            100% { background: transparent; }
+        }
+        tr:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 70%);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: width 0.5s, height 0.5s, opacity 0.5s;
+        }
+        tr:active:before {
+            width: 200px;
+            height: 200px;
+            opacity: 1;
+        }
+        td a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+            animation: blink 0.5s infinite alternate;
+        }
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.6; }
+        }
+        .home-button {
+            display: block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+            animation: buttonPulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-container">
+            <div class="sparkle"></div>
+            <table id="memberTable">
+                <tr>
+                    <th>STT</th>
+                    <th>Họ và Tên</th>
+                    <th>Thông tin giới thiệu</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Nguyễn Tấn An</td>
+                    <td><a href="tanan.html">Tấn An</a></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Đặng Quang Bình</td>
+                    <td><a href="quangbinh.html">Quang Bình</a></td>
+                </tr>
+				 <tr>
+                    <td>3</td>
+                    <td>Đặng Thị Như Bình</td>
+                    <td><a href="nhubinh.html">Như Bình</a></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Lê Văn Châu</td>
+                    <td><a href="chau1.html">Châu</a></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Lê Thị Chung</td>
+                    <td><a href="chung.html">Chung</a></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Dương Thị Thu Có</td>
+                    <td><a href="co.html">Thu có</a></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Nguyễn Thị Của</td>
+                    <td><a href="cua.html">Thị Của</a></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Dương Thị Mý Danh</td>
+                    <td><a href="danh.html">Danh</a></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Lê Thị Mỹ Dung</td>
+                    <td><a href="dung.html">Dung</a></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Nguyễn Mai Thị Thanh Duy</td>
+                    <td><a href="duy.html">Duy</a></td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Nguyễn Tiến Đạt</td>
+                    <td><a href="dat.html">Đạt</a></td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Bùi Văn Đầy</td>
+                    <td><a href="day.html">Đầy</a></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>Nguyễn Thị Hương Giang</td>
+                    <td><a href="giang.html">Giang</a></td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>Mai Trần Duy Hải</td>
+                    <td><a href="hai.html">Hải</a></td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>Phan Thị Thanh Hằng</td>
+                    <td><a href="hang.html">Hằng</a></td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>Lê Thị Mỹ Hân</td>
+                    <td><a href="han.html">Hân</a></td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>Dương Ánh Hiền</td>
+                    <td><a href="hien.html">Hiền</a></td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td>Trần Thị Hoa</td>
+                    <td><a href="hoa18.html">Hoa</a></td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td>Đặng Thị Hoàng</td>
+                    <td><a href="hoang.html">Hoàng</a></td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td>Nguyễn Thanh Hòa</td>
+                    <td><a href="thoa.html">Thanh Hòa</a></td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>Dương Thị Hồng</td>
+                    <td><a href="hong.html">Hồng</a></td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td>Trương Đình Hơn</td>
+                    <td><a href="dhon.html">Đ.Hơn</a></td>
+                </tr>
+                <tr>
+                    <td>23</td>
+                    <td>Trương Minh Hơn</td>
+                    <td><a href="mhon.html">M.Hơn</a></td>
+                </tr>
+                <tr>
+                    <td>24</td>
+                    <td>Ngô Văn Huy</td>
+                    <td><a href="huy.html">Huy</a></td>
+                </tr>
+                <tr>
+                    <td>25</td>
+                    <td>Nguyễn Thị Mỹ Hương</td>
+                    <td><a href="huong.html">Hương</a></td>
+                </tr>
+                <tr>
+                    <td>26</td>
+                    <td>Trần Minh Khôi</td>
+                    <td><a href="khoi.html">Khôi</a></td>
+                </tr>
+                <tr>
+                    <td>27</td>
+                    <td>Trần Thị Thanh Kiều</td>
+                    <td><a href="kieu.html">Kiều</a></td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td>Lê Anh Kiệt</td>
+                    <td><a href="kiet.html">Kiệt</a></td>
+                </tr>
+                <tr>
+                    <td>29</td>
+                    <td>Nguyễn Chí Lâm</td>
+                    <td><a href="lam.html">Lâm</a></td>
+                </tr>
+                <tr>
+                    <td>30</td>
+                    <td>Đinh Thị Mỹ Lên</td>
+                    <td><a href="mlen.html">Mỹ Lên</a></td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td>Nguyễn Văn Lên</td>
+                    <td><a href="vlen.html">Văn Lên</a></td>
+                </tr>
+                <tr>
+                    <td>32</td>
+                    <td>Trần Thị Lên</td>
+                    <td><a href="tlen.html">Thị Lên</a></td>
+                </tr>
+                <tr>
+                    <td>33</td>
+                    <td>Đỗ Thị Kim Liên</td>
+                    <td><a href="lien.html">Liên</a></td>
+                </tr>
+                <tr>
+                    <td>34</td>
+                    <td>Nguyễn Văn Linh</td>
+                    <td><a href="linh.html">Linh</a></td>
+                </tr>
+                <tr>
+                    <td>35</td>
+                    <td>Trần Thị Kim Lộc</td>
+                    <td><a href="loc.html">Kim Lộc</a></td>
+                </tr>
+                <tr>
+                    <td>36</td>
+                    <td>Dương Thị Mỹ Lợi</td>
+                    <td><a href="loi.html">Lợi</a></td>
+                </tr>
+                <tr>
+                    <td>37</td>
+                    <td>Nguyễn Thị Thu Ngân</td>
+                    <td><a href="ngan.html">Ngân</a></td>
+                </tr>
+                <tr>
+                    <td>38</td>
+                    <td>Phùng Thị Nhi</td>
+                    <td><a href="nhi.html">Nhi</a></td>
+                </tr>
+                <tr>
+                    <td>39</td>
+                    <td>Lê Thị Kiều Nhung</td>
+                    <td><a href="nhung.html">Nhung</a></td>
+                </tr>
+                <tr>
+                    <td>40</td>
+                    <td>Bùi Thị Thanh Phát</td>
+                    <td><a href="tphat.html">Thanh Phát</a></td>
+                </tr>
+                <tr>
+                    <td>41</td>
+                    <td>Trần Thị Phát</td>
+                    <td><a href="thiphat.html">Thị Phát</a></td>
+                </tr>
+                <tr>
+                    <td>42</td>
+                    <td>Dương thị Thu Thừa</td>
+                    <td><a href="thua.html">Thừa</a></td>
+                </tr>
+            </table>
+        </div>
+           
+            </table>
+        </div>
+        <a href="trangchu.html" class="home-button">🏠 Quay về trang chủ</a>
+        <footer>
+            <p>&copy; 2025 Lớp 12D1. Tất cả quyền được bảo lưu.</p>
+        </footer>
+    </div>
+</body>
+</html>
